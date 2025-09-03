@@ -125,6 +125,93 @@ All scripts expect JSON data with the following structure:
 
 ### 📊 Method Flowcharts
 
+#### Why 15-Second Windows? Physiological & Practical Considerations
+
+**The choice of 15-second windows for breathing rate estimation is based on several key factors:**
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    WHY 15-SECOND WINDOWS?                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│ 🫁 PHYSIOLOGICAL CONSIDERATIONS:                                │
+│ • Respiratory cycles: 3-5 seconds (12-20 BPM resting)          │
+│ • Need 3-5 breathing cycles minimum for reliable estimation    │
+│ • 15 seconds captures 3-5 cycles → statistically meaningful     │
+│                                                                 │
+│ 📊 STATISTICAL CONSIDERATIONS:                                  │
+│ • Too short (<10s): Insufficient data, high variance           │
+│ • Too long (>60s): Respiratory patterns may change             │
+│ • 15 seconds: Optimal balance of stability vs. responsiveness   │
+│                                                                 │
+│ 🔬 SIGNAL PROCESSING CONSIDERATIONS:                            │
+│ • Spectral analysis needs sufficient samples for PSD estimation │
+│ • HRV features require adequate RR intervals for reliability    │
+│ • 15 seconds typically provides 15-30 RR intervals (adequate)   │
+│                                                                 │
+│ ⚡ PRACTICAL CONSIDERATIONS:                                     │
+│ • Real-time applications need responsive measurements          │
+│ • Clinical monitoring requires timely feedback                 │
+│ • 15 seconds allows trend detection without excessive lag      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Window Size Trade-offs:**
+
+| Window Size | Advantages | Disadvantages | Best For |
+|-------------|------------|---------------|----------|
+| **10s** | Very responsive | High variance, may miss slow breathing | Fast breathing detection |
+| **15s** | Good balance | Moderate variance | General monitoring |
+| **30s** | More stable | Less responsive | Research/long-term trends |
+| **60s** | Most stable | Slow to detect changes | Sleep studies |
+
+**For This Dataset:**
+- **Heart Rate**: ~76 BPM (resting) → Expected BR: 12-20 BPM
+- **RR Intervals**: ~787ms mean → ~76 RR intervals per minute
+- **15-Second Window**: Captures ~19 RR intervals (excellent for HRV analysis)
+- **Breathing Cycles**: 3-5 cycles in 15 seconds (optimal for spectral analysis)
+
+#### 📊 **Clarifying the Terminology:**
+
+**"Breathing rate at 15-second intervals" means:**
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    HOW INTERVALS WORK                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│ INPUT DATA: Continuous RR intervals over time                   │
+│                                                                 │
+│ PROCESSING:                                                     │
+│ ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐ │
+│ │  0-15s      │  │ 15-30s      │  │ 30-45s      │  │ 45-60s      │ │
+│ │ RR data     │  │ RR data     │  │ RR data     │  │ RR data     │ │
+│ └─────┬───────┘  └─────┬───────┘  └─────┬───────┘  └─────┬───────┘ │
+│       │                │                │                │         │
+│       ▼                ▼                ▼                ▼         │
+│ ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐ │
+│ │ BR = 16.2   │  │ BR = 15.8   │  │ BR = 17.1   │  │ BR = 14.9   │ │
+│ │ BPM         │  │ BPM         │  │ BPM         │  │ BPM         │ │
+│ └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘ │
+│                                                                 │
+│ OUTPUT: Breathing rate measurements every 15 seconds            │
+│                                                                 │
+│ Time: 20:41:00    BR: 16.2 BPM                                  │
+│ Time: 20:41:15    BR: 15.8 BPM                                  │
+│ Time: 20:41:30    BR: 17.1 BPM                                  │
+│ Time: 20:41:45    BR: 14.9 BPM                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Key Points:**
+- ✅ **15-second windows** of RR data are analyzed
+- ✅ **Breathing rate calculated** from each 15-second window
+- ✅ **Measurements output** at 15-second intervals
+- ✅ **Continuous monitoring** with regular updates
+
+**Note:** The original script comment says "15-second intervals" but defaults to 30 seconds. You can change this with the `--interval` parameter.
+
 #### 1. HRV Time-Domain Method
 ```
 ┌─────────────────┐
