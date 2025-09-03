@@ -138,12 +138,12 @@ All scripts expect JSON data with the following structure:
 │ • Remove outliers│     │ • Min 5 intervals│
 │ • Detrend signal │     │ • Check quality  │
 └─────────┬────────┘     └─────────┬────────┘
-          │                       │
-          ▼                       ▼
-┌─────────────────┐     ┌─────────────────┐
-│ HRV Features    │     │   Error Case    │
-│ • RMSSD         │     │   Return NaN    │
-│ • SDNN          │     └─────────────────┘
+          │                        │
+          ▼                        ▼
+┌─────────────────┐       ┌─────────────────┐
+│ HRV Features    │       │   Error Case    │
+│ • RMSSD         │       │   Return NaN    │
+│ • SDNN          │       └─────────────────┘
 │ • pNN50         │
 │ • CV_RR         │
 └─────────┬───────┘
