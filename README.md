@@ -133,11 +133,11 @@ All scripts expect JSON data with the following structure:
 └─────────┬───────┘
           │
           ▼
-┌─────────────────┐     ┌─────────────────┐
-│  Preprocessing  │────▶│   Validation    │
+┌──────────────────┐     ┌──────────────────┐
+│  Preprocessing   │────▶│   Validation     │
 │ • Remove outliers│     │ • Min 5 intervals│
-│ • Detrend signal │     │ • Check quality │
-└─────────┬───────┘     └─────────┬───────┘
+│ • Detrend signal │     │ • Check quality  │
+└─────────┬────────┘     └─────────┬────────┘
           │                       │
           ▼                       ▼
 ┌─────────────────┐     ┌─────────────────┐
@@ -173,7 +173,7 @@ All scripts expect JSON data with the following structure:
           ▼
     ┌─────────────┐
     │   Output    │
-    │ 16.2 BPM   │
+    │  16.2 BPM   │
     └─────────────┘
 ```
 
@@ -210,9 +210,9 @@ All scripts expect JSON data with the following structure:
 ┌─────────────────────────────────────┐
 │        Frequency Bands              │
 ├─────────────────────────────────────┤
-│ VLF: 0.0033-0.04 Hz (0.2-2.4 BPM)  │
-│ LF:  0.04-0.15 Hz  (2.4-9 BPM)     │
-│ HF:  0.15-0.4 Hz   (9-24 BPM)      │
+│ VLF: 0.0033-0.04 Hz (0.2-2.4 BPM)   │
+│ LF:  0.04-0.15 Hz  (2.4-9 BPM)      │
+│ HF:  0.15-0.4 Hz   (9-24 BPM)       │
 └─────────────────┬───────────────────┘
                   │
                   ▼
@@ -244,10 +244,10 @@ All scripts expect JSON data with the following structure:
 └─────────────────┬───────────────────┘
                   │
                   ▼
-    ┌─────────────────┐
-    │   Final BR      │
-    │   [17.0 BPM]    │
-    └─────────────────┘
+         ┌─────────────────┐
+         │   Final BR      │
+         │   [17.0 BPM]    │
+         └─────────────────┘
 ```
 
 #### 3. Statistical Baseline Method
@@ -258,20 +258,20 @@ All scripts expect JSON data with the following structure:
 └─────────┬───────┘
           │
           ▼
-┌─────────────────┐     ┌─────────────────┐
-│  Basic Stats    │────▶│   Validation    │
+┌─────────────────┐     ┌──────────────────┐
+│  Basic Stats    │────▶│   Validation     │
 │ • Mean RR       │     │ • Min 3 intervals│
 │ • Std RR        │     │ • Check range    │
-│ • Count         │     └─────────┬───────┘
+│ • Count         │     └─────────┬────────┘
 └─────────┬───────┘               │
           │                       ▼
-          ▼             ┌─────────────────┐
-┌─────────────────┐     │   Error Case    │
-│   Method 1      │     │   Return NaN    │
-│ RR Mean Based   │     └─────────────────┘
+          ▼              ┌─────────────────┐
+┌──────────────────┐     │   Error Case    │
+│   Method 1       │     │   Return NaN    │
+│ RR Mean Based    │     └─────────────────┘
 │ BR = 60 / RR_mean│
-│ [76.2 BPM]      │
-└─────────┬───────┘
+│ [76.2 BPM]       │
+└─────────┬────────┘
           │
           ▼
 ┌─────────────────┐     ┌─────────────────┐
@@ -292,15 +292,15 @@ All scripts expect JSON data with the following structure:
 └─────────────────┬───────────────────┘
                   │
                   ▼
-┌─────────────────────────────────────┐
-│   Weighted Average                  │
-├─────────────────────────────────────┤
-│ BR_final = (0.3 × M1) + (0.4 × M2)  │
-│          + (0.3 × M3)               │
-│                                    │
-│ BR_final = (0.3 × 76.2) + (0.4 × 15.8) │
-│          + (0.3 × 14.2) = 15.9 BPM     │
-└─────────────────┬───────────────────┘
+┌───────────────────────────────────────┐
+│   Weighted Average                    │
+├───────────────────────────────────────┤
+│ BR_final = (0.3 × M1) + (0.4 × M2)    │
+│          + (0.3 × M3)                 │
+│                                       │
+│ BR_final = (0.3 × 76.2) + (0.4 × 15.8)│
+│          + (0.3 × 14.2) = 15.9 BPM    │
+└─────────────────┬─────────────────────┘
                   │
                   ▼
 ┌─────────────────────────────────────┐
@@ -312,10 +312,10 @@ All scripts expect JSON data with the following structure:
 └─────────────────┬───────────────────┘
                   │
                   ▼
-    ┌─────────────────┐
-    │   Final BR      │
-    │   [15.9 BPM]    │
-    └─────────────────┘
+         ┌─────────────────┐
+         │   Final BR      │
+         │   [15.9 BPM]    │
+         └─────────────────┘
 ```
 
 ### Key Algorithm Components
